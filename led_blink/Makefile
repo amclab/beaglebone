@@ -1,19 +1,18 @@
 CFLAGS = -mcpu=cortex-a8 -g
 OPTIMIZATION_FLAGS= -O2
-TOOLCHAIN_PREFIX = arm-linux-gnueabihf-
 
 
 all: clean bin
 
 compile: code.c startup.s
-	$(TOOLCHAIN_PREFIX)gcc $(CFLAGS) $(OPTIMIZATION_FLAGS) -c code.c -o code.o
-	$(TOOLCHAIN_PREFIX)as $(CFLAGS) startup.s -o startup.o
+	$(CC)gcc $(CFLAGS) $(OPTIMIZATION_FLAGS) -c code.c -o code.o
+	$(CC)as $(CFLAGS) startup.s -o startup.o
 
 link: compile
-	$(TOOLCHAIN_PREFIX)ld -T linker.lds code.o startup.o -o code.elf
+	$(CC)ld -T linker.lds code.o startup.o -o code.elf
 
 bin: link
-	$(TOOLCHAIN_PREFIX)objcopy --gap-fill=0xff -O binary code.elf code.bin
+	$(CC)objcopy --gap-fill=0xff -O binary code.elf code.bin
 
 
 clean:
